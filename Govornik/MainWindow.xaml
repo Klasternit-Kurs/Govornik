@@ -11,6 +11,19 @@
 			<TextBox Text="{Binding Govor}" FontSize="24" MinWidth="300"/>
 			<Button FontSize="24" Content="Govor" Click="Klik"/>
 		</StackPanel>
-		<DataGrid FontSize="24" Name="dg" IsReadOnly="True" ColumnWidth="*" />
+		<DataGrid AutoGenerateColumns="False" FontSize="24" Name="dg" IsReadOnly="True" ColumnWidth="*">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Ime" Binding="{Binding Ime}"/>
+				<DataGridTextColumn Header="Prezime" Binding="{Binding Prezime}"/>
+				<DataGridTextColumn Header="Zadnje" Binding="{Binding ZadnjeReceno}"/>
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding Slusanje, UpdateSourceTrigger=PropertyChanged}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
 	</DockPanel>
 </Window>

@@ -24,15 +24,14 @@ namespace Govornik
 		public MainWindow()
 		{
 			InitializeComponent();
-			Slusaoci.Add(new Slusaoc("Pera", "Peric"));
-			Slusaoci.Add(new Slusaoc("Neko", "Nekic"));
-			Slusaoci.Add(new Slusaoc("Trecko", "Treckovic"));
+			DataContext = new Predavac();
+			Slusaoci.Add(new Slusaoc("Pera", "Peric", (DataContext as Predavac)));
+			Slusaoci.Add(new Slusaoc("Neko", "Nekic", (DataContext as Predavac)));
+			Slusaoci.Add(new Slusaoc("Trecko", "Treckovic", (DataContext as Predavac)));
 			dg.ItemsSource = Slusaoci;
 
-			DataContext = new Predavac();
-
-			foreach (Slusaoc s in Slusaoci)
-				(DataContext as Predavac).GovorSeDogadja += s.Slusam;
+		
+				
 
 		}
 
@@ -69,12 +68,28 @@ namespace Govornik
 		public string Prezime { get; set; }
 		public string ZadnjeReceno { get; set; }
 
+		private bool _slusanje;
+		public bool Slusanje 
+		{ 
+			get => _slusanje; 
+			set
+			{
+				_slusanje = value;
+				if (_slusanje)
+					AktivanGov.GovorSeDogadja += Slusam;
+				else
+					AktivanGov.GovorSeDogadja -= Slusam;
+			}
+		}
+		public Predavac AktivanGov {get;set;}
+
 		public void Slusam(object Govornik, GovorEventArgs g) => ZadnjeReceno = g.Govor;
 
-		public Slusaoc(string i, string p)
+		public Slusaoc(string i, string p, Predavac g)
 		{
 			Ime = i;
 			Prezime = p;
+			AktivanGov = g;
 		}
 	}
 }
